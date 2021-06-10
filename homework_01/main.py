@@ -33,6 +33,10 @@ ODD = "odd"
 EVEN = "even"
 PRIME = "prime"
 
+dict_func = {'odd': lambda num: num % 2 != 0,
+             'even': lambda num: num % 2 == 0,
+             'prime': is_prime}
+
 
 def filter_numbers(list_num, type):
     """
@@ -45,7 +49,4 @@ def filter_numbers(list_num, type):
     >>> filter_numbers([2, 3, 4, 5], EVEN)
     <<< [2, 4]
     """
-    dict_func = {'odd': lambda num: num % 2 != 0,
-                 'even': lambda num: num % 2 == 0,
-                 'prime': is_prime}
     return list(filter(dict_func[type], list_num))
