@@ -14,3 +14,7 @@ PG_CONN_URI = os.environ.get("SQLALCHEMY_PG_CONN_URI") or "postgresql+asyncpg://
 
 Base = None
 Session = None
+
+
+def models():
+    return None
