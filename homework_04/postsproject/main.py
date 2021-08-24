@@ -12,6 +12,10 @@
   (используйте полученные из запроса данные, передайте их в функцию для добавления в БД)
 - закрытие соединения с БД
 """
+import asyncio
+
+from models import create_tables, Session
+from jsonplaceholder_requests import run_creating_data
 
 
 async def async_main():
@@ -19,7 +23,7 @@ async def async_main():
 
 
 def main():
-    pass
+    asyncio.run(create_tables())
 
 
 if __name__ == "__main__":

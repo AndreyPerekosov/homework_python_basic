@@ -2,10 +2,7 @@
 создайте асинхронные функции для выполнения запросов к ресурсам (используйте aiohttp)
 """
 import asyncio
-
-import aiohttp
 from dataclasses import dataclass
-
 from aiohttp import ClientSession
 
 USERS_DATA_URL = "https://jsonplaceholder.typicode.com/users"
@@ -58,15 +55,10 @@ async def set_data(url: str, name_item: str) -> list:
     return list_of_data_item
 
 
-async def run_fetch_data() -> tuple:
-    res = await asyncio.gather(set_data(USERS_DATA_URL, 'user'), set_data(POSTS_DATA_URL, 'post'))
-    return res
-
-
-def main():
-    res = asyncio.run(run_fetch_data())
-    return res
-
-
-if __name__ == '__main__':
-    print(main())
+async def run_creating_data() -> tuple:
+    """
+    Fetching and setting data to DataClass and returns tuple of creating data
+    :return: tuple_of_data
+    """
+    users_data, posts_data = await asyncio.gather(set_data(USERS_DATA_URL, 'user'), set_data(POSTS_DATA_URL, 'post'))
+    return users_data, posts_data

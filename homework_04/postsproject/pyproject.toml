@@ -8,6 +8,7 @@ authors = ["Andrey Perekosov"]
 python = "^3.8"
 aiohttp = "^3.7.4"
 SQLAlchemy = "^1.4.23"
+asyncpg = "^0.24.0"
 
 [tool.poetry.dev-dependencies]
 
