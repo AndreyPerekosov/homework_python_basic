@@ -7,12 +7,13 @@
     <h2>Posts for {{ user.username }}</h2>
     <div>
         <ul>
-            {% for post in posts %}
+            {% for post in user.posts %}
                 <li>
                     <h3>{{ post.title }}</h3>
                     <p>{{ post.body }}</p>
                 </li>
             {% endfor %}
         </ul>
+        <a href="{{ url_for('users_app.add', user_id=user.id) }}">Add new post</a>
     </div>
   {% endblock %}
