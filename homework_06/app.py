@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template
 from flask_migrate import Migrate
 
@@ -7,8 +9,9 @@ from views.users import users_app
 app = Flask(__name__)
 app.register_blueprint(users_app, url_prefix="/users")
 
+SQLALCHEMY_DATABASE_URI = os.getenv("DB_CONN_URI", "postgresql+psycopg2://user:password@localhost:5432/users")
 app.config.update(
-    SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://user:password@localhost:5432/users",
+    SQLALCHEMY_DATABASE_URI=SQLALCHEMY_DATABASE_URI,
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
 )
 db.init_app(app)
