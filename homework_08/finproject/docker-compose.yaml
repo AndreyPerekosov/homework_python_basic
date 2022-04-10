@@ -6,8 +6,8 @@ services:
     env_file:
       - postgres.env # configure postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
-      - pg-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - pg-data:/var/lib/postgresql/dataa/ # persist data even if container shuts down
 volumes:
   pg-data:

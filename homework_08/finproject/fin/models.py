@@ -16,7 +16,7 @@ class Portfolio(models.Model):
     user = models.ForeignKey(FinUser, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'full_name: {self.name_portfolio} tick:{self.date_update}, ' \
+        return f'full_name: {self.name_portfolio} data:{self.data}, ' \
                f'date: {self.date_update}'
 
 
