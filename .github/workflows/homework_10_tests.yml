@@ -1,4 +1,4 @@
-name: Run tests for homework
+name: Run tests for homework_10
 
 on: [push]
 
@@ -12,8 +12,8 @@ jobs:
         # Docker Hub image
         image: postgres
         # Provide the password for postgres
-        env:
-          POSTGRES_PASSWORD: secretpassword
+        env_file:
+          - postgres.env # configure postgres
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -37,14 +37,8 @@ jobs:
         pip install flake8 pytest Faker requests pytest-asyncio
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest testing -s -vv -rsx
-      env:
-        SQLALCHEMY_PG_CONN_URI: postgresql+asyncpg://postgres:secretpassword@localhost:5432/postgres
+        cd homework_10/finproject
+        python3 manage.py test
+
