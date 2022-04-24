@@ -12,8 +12,8 @@ jobs:
         # Docker Hub image
         image: postgres
         # Provide the password for postgres
-        env_file:
-          - postgres.env # configure postgres
+        env:
+          POSTGRES_PASSWORD: password
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -41,4 +41,6 @@ jobs:
       run: |
         cd homework_10/finproject
         python3 manage.py test
-
+      env:
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
