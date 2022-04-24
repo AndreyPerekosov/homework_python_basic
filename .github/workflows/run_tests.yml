@@ -46,5 +46,7 @@ jobs:
     - name: Test with pytest
       run: |
         pytest testing -s -vv -rsx
+        cd homework_10/finproject
+        python3 manage.py test
       env:
         SQLALCHEMY_PG_CONN_URI: postgresql+asyncpg://postgres:secretpassword@localhost:5432/postgres
