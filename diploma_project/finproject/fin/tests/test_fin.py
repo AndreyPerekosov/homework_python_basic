@@ -8,7 +8,7 @@ class FInTextCase(TestCase):
     def setUp(self) -> None:
         user = FinUser.objects.create(username='ivan', password=123)
         porto = Portfolio.objects.create(name_portfolio='new', user=user)
-        stock = Stock.objects.create(full_name='sber', tick='sb')
+        stock = Stock.objects.create(name='sber', ticker='sb')
         stock.portfolio.add(porto)
         stock.user.add(user)
         stock.save()
@@ -22,15 +22,15 @@ class FInTextCase(TestCase):
         self.assertEqual(porto.name_portfolio, 'new')
 
     def test_stock_exists(self):
-        stock = Stock.objects.get(full_name='sber')
-        self.assertEqual(stock.full_name, 'sber')
+        stock = Stock.objects.get(name='sber')
+        self.assertEqual(stock.name, 'sber')
 
     def test_stock_porto_rel(self):
-        stock = Stock.objects.get(full_name='sber')
+        stock = Stock.objects.get(name='sber')
         porto = stock.portfolio.all()[0]
         self.assertEqual(porto.name_portfolio, 'new')
 
     def test_stock_user_rel(self):
-        stock = Stock.objects.get(full_name='sber')
+        stock = Stock.objects.get(name='sber')
         user = stock.user.all()[0]
         self.assertEqual(user.username, 'ivan')

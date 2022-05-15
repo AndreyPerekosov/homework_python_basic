@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900|PT+Sans&display=swap&subset=cyrillic" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'fin/css/style.css' %}">
+    <title>{% block title %} Optimal Portfolio {% endblock %}</title>
+</head>
+<body>
+
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <a class="header__logo" href="#" data-scroll="#intro">
+                    <img src="{% static 'fin/images/logo.svg' %}" alt="Portfolio">
+                </a>
+                <nav class="nav">
+                    <a class="nav__link  active" href="#">Sign In</a>
+                    <a class="nav__link" href="#">Log In</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Intro -->
+    <div class="intro">
+        <div class="container">
+            <div class="intro__inner">
+                <div class="intro__text">
+                    <h1 class="intro__title">
+                        <span class="intro__title-amp"></span>
+                        Optimal<br>Portfolio
+                    </h1>
+                    {% block intro %}
+                    <div class="intro__countries">This site helps you to create profitable portfolio </div>
+                    <button class="btn  btn--block  btn--orange" type="submit">
+                        <span>Create Portfolio</span>
+                    </button>
+                    {% endblock %}
+                </div>
+
+            </div><!-- /.intro__inner -->
+
+        </div><!-- /.container -->
+    </div><!-- /.intro -->
+
+    <div class="main">
+        <div class="container">
+            <div class="intro__inner">
+                <div class="intro__text">
+                    <h1 class="intro__title">
+                    {% block main %}{% endblock %}
+                    </h1>
+                </div>
+            </div><!-- /.intro__inner -->
+
+        </div><!-- /.container -->
+    </div><!-- /.intro -->
+<!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <a class="header__logo  header__logo--black" href="#" data-scroll="#intro">
+                <span class="header__logo-text">Optimal Portfolio</span>
+            </a>
+
+
+            <nav class="footer__nav">
+                <a href="#">Terms &amp; Contidions</a>
+                <a href="#">Privacy Policy</a>
+            </nav>
+        </div>
+    </footer>
+
+
+</body>

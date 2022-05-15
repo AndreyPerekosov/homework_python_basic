@@ -9,7 +9,7 @@ from fin.models import Stock
 
 
 def index(request):
-    return HttpResponse('This is page in dev')
+    return render(request, 'fin/index.html')
 
 
 class PageTitleMixin:
@@ -23,7 +23,7 @@ class PageTitleMixin:
 
 class StockDetailView(PageTitleMixin, DetailView):
     model = Stock
-    page_title = 'Animal detail'
+    page_title = 'Stock detail'
 
 
 class StockCreateView(CreateView):

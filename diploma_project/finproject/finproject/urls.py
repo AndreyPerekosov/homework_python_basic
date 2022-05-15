@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+import fin.views
+
 urlpatterns = [
+    path('', fin.views.index, name='main'),
     path('admin/', admin.site.urls),
     path('fin/', include('fin.urls', namespace='fin')),
     path('finauth/', include('finauth.urls', namespace='finauth')),

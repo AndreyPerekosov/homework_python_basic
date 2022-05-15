@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'finproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'user',
-        'PASSWORD': 'password',
+        'NAME': 'porfollio',
+        'USER': 'fin',
+        'PASSWORD': '123',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
         },
     }
 

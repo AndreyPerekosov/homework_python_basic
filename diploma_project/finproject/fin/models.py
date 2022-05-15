@@ -1,15 +1,6 @@
 from django.db import models
 from finauth.models import FinUser
 
-
-# class User(models.Model):
-#     name = models.CharField(max_length=200)
-#     email = models.EmailField(max_length=200, unique=True)
-#
-#     def __str__(self):
-#         return f'name: {self.name} email:{self.email}'
-
-
 class Portfolio(models.Model):
     name_portfolio = models.CharField(max_length=200)
     data = models.JSONField(null=True)
@@ -22,8 +13,11 @@ class Portfolio(models.Model):
 
 
 class Stock(models.Model):
-    full_name = models.CharField(max_length=200)
-    tick = models.CharField(max_length=50, blank=True)
+    figi= models.CharField(max_length=50, blank=True)
+    ticker = models.CharField(max_length=50, blank=True)
+    currency = models.CharField(max_length=50, blank=True)
+    lot = models.IntegerField(null=True)
+    name = models.CharField(max_length=200)
     price = models.FloatField(null=True)
     date_update = models.DateField(auto_now=True)
     desc = models.TextField(blank=True)
@@ -31,5 +25,5 @@ class Stock(models.Model):
     user = models.ManyToManyField(FinUser)
 
     def __str__(self):
-        return f'full_name: {self.full_name} tick:{self.tick}, ' \
+        return f'full_name: {self.name} ticker:{self.ticker}, ' \
                f'date {self.date_update}'
