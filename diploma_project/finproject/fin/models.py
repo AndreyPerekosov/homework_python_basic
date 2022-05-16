@@ -25,5 +25,5 @@ class Stock(models.Model):
     user = models.ManyToManyField(FinUser)
 
     def __str__(self):
-        return f'full_name: {self.name} ticker:{self.ticker}, ' \
+        return f'name: {self.name} ticker:{self.ticker}, ' \
                f'date {self.date_update}'
