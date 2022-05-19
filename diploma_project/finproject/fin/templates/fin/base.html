@@ -18,8 +18,12 @@
                     <img src="{% static 'fin/images/logo.svg' %}" alt="Portfolio">
                 </a>
                 <nav class="nav">
-                    <a class="nav__link  active" href="#">Sign In</a>
-                    <a class="nav__link" href="#">Log In</a>
+                    {% if user.is_anonymous %}
+                        <a class="nav__link" href="{% url 'finauth:register' %}">Sign In</a>
+                        <a class="nav__link" href="{% url 'finauth:login' %}">Log In</a>
+                    {% else %}
+                        <a class="nav__link" href="{% url 'finauth:logout' %}">Log Out</a>
+                    {% endif %}
                 </nav>
             </div>
         </div>
@@ -37,9 +41,9 @@
                     </h1>
                     {% block intro %}
                     <div class="intro__countries">This site helps you to create profitable portfolio </div>
-                    <button class="btn  btn--block  btn--orange" type="submit">
-                        <span>Create Portfolio</span>
-                    </button>
+{#                    <button class="btn  btn--block  btn--orange" type="submit">#}
+{#                        <span>Create Portfolio</span>#}
+{#                    </button>#}
                     {% endblock %}
                 </div>
 
@@ -49,24 +53,17 @@
     </div><!-- /.intro -->
 
     <div class="main">
-        <div class="container">
-            <div class="intro__inner">
-                <div class="intro__text">
-                    <h1 class="intro__title">
-                    {% block main %}{% endblock %}
-                    </h1>
-                </div>
-            </div><!-- /.intro__inner -->
 
+        <div class="container">
+            {% block main %}{% endblock %}
         </div><!-- /.container -->
-    </div><!-- /.intro -->
-<!-- Footer -->
+    </div>
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <a class="header__logo  header__logo--black" href="#" data-scroll="#intro">
                 <span class="header__logo-text">Optimal Portfolio</span>
             </a>
-
 
             <nav class="footer__nav">
                 <a href="#">Terms &amp; Contidions</a>

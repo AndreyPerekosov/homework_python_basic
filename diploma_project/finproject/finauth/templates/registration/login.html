@@ -1,11 +1,11 @@
 {% extends 'fin/base.html' %}
-{% block title %} Registration {% endblock %}
+{% block title %} Login {% endblock %}
 {% block main %}
-<div class="user-creation-form">
+<div class="login-form">
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="save">
+        <input type="submit" value="login">
     </form>
 </div>
 {% endblock %}

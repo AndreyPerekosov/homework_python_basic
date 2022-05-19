@@ -6,6 +6,7 @@ app_name = 'fin'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('create_stock/', fin.StockCreateView.as_view(), name='create stock'),
-    path('update_stock/<int:pk>/', fin.StockUpdateView.as_view(), name='update stock')
+    path('create_portfolio/', fin.PortfolioCreateView.as_view(), name='create_portfolio'),
+    path('update_portfolio/<int:pk>/', fin.PortfolioUpdateView.as_view(), name='update_portfolio'),
+    path('detail_portfolio/<int:pk>/', fin.PortfolioDetailView.as_view(), name='detail_portfolio'),
 ]

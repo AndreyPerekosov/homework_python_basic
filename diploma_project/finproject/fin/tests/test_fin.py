@@ -34,3 +34,8 @@ class FInTextCase(TestCase):
         stock = Stock.objects.get(name='sber')
         user = stock.user.all()[0]
         self.assertEqual(user.username, 'ivan')
+
+    def test_porto_user_rel(self):
+        user = FinUser.objects.get(username='ivan')
+        porfolio = user.portfolio_set.all()[0]
+        self.assertEqual(porfolio.name_portfolio, 'new')

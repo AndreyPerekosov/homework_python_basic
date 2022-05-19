@@ -1,5 +1,16 @@
 {% extends 'fin/base.html' %}
 
 {% block main %}
-<h1>This page in dev</h1>
+{% if not user.is_anonymous %}
+    {% if portfolios %}
+    <ul>
+    {% for portfolio in porfolios %}
+        <li><a href="{% url 'fin:detail_portfolio' portfolio.id %}">{{ portfolio.portfolio_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No portfolios are available.</p>
+    {% endif %}
+    <p><a href="{% url 'fin:create_portfolio' %}">Add portfolio</a> </p>
+{% endif %}
 {% endblock %}

@@ -1,15 +1,23 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+
 
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, UpdateView
 
-from fin.models import Stock
+from fin.models import Portfolio
+from finauth.models import FinUser
 
 
 def index(request):
-    return render(request, 'fin/index.html')
+    user = request.user
+    if user.is_anonymous:
+        return render(request, 'fin/index.html')
+    else:
+        model_user = FinUser.objects.get(id = user.pk)
+        portfolios = model_user.portfolio_set.all()
+        context = {'portfolios': portfolios}
+        return render(request, 'fin/index.html', context=context)
 
 
 class PageTitleMixin:
@@ -21,18 +29,20 @@ class PageTitleMixin:
         return context
 
 
-class StockDetailView(PageTitleMixin, DetailView):
-    model = Stock
-    page_title = 'Stock detail'
+class PortfolioDetailView(PageTitleMixin, DetailView):
+    model = Portfolio
+    page_title = 'Portfolio detail'
 
 
-class StockCreateView(CreateView):
-    model = Stock
+class PortfolioCreateView(PageTitleMixin, CreateView):
+    model = Portfolio
+    page_title = 'Portfolio Create'
     success_url = reverse_lazy('fin:index')
     fields = '__all__'
 
 
-class StockUpdateView(UpdateView):
-    model = Stock
+class PortfolioUpdateView(PageTitleMixin, UpdateView):
+    model = Portfolio
+    page_title = 'Portfolio update'
     success_url = reverse_lazy('fin:index')
     fields = '__all__'
