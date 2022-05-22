@@ -1,0 +1,30 @@
+{% extends 'fin/base.html' %}
+{% block main %}
+ <h2>Portfolio</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="update">
+    </form>
+    {% if object.stock_set.count > 0  %}
+        <ul>
+        {% for stock in object.stock_set.all %}
+            <li> Name: {{ stock.name }} </li>
+            <li> Ticker: {{ stock.ticker }}</li>
+            <li> Currency: {{ stock.currency }}</li>
+            <a href="{% url 'fin:remove_stock' object.id stock.id %}">Remove stock</a>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No stocks are available.</p>
+    {% endif %}
+    <p>Available stock</p>
+    {% for stock in stocks %}
+        {% if stock not in object.stock_set.all %}
+        <li> Name: {{ stock.name }} </li>
+        <li> Ticker: {{ stock.ticker }}</li>
+        <li> Currency: {{ stock.currency }}</li>
+        <a href="{% url 'fin:add_stock' object.id stock.id %}">Add stock</a>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

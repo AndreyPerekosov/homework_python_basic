@@ -1,0 +1,19 @@
+{% extends 'fin/base.html' %}
+{% block main %}
+ <h2>Portfolio</h2>
+    {{ object.name_portfolio }}
+    <a href="{% url 'fin:calc_portfolio' portfolio.id %}">Calc portfolio</a>
+    {% if object.stock_set.count > 0  %}
+        <ul>
+        {% for stock in object.stock_set.all %}
+            <li> Name: {{ stock.name }} </li>
+            <li> Ticker: {{ stock.ticker }}</li>
+            <li> Currency: {{ stock.currency }}</li>
+            <p> </p>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No stocks are available.</p>
+    {% endif %}
+    <a href="{% url 'fin:update_portfolio' portfolio.id %}">Update portfolio</a>
+{% endblock %}

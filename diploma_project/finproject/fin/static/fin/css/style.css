@@ -161,14 +161,6 @@ body {
     margin-top: auto;
 
     background-color: #F9F9F9;
-    background-image:
-        url("../images/tire-left.svg"),
-        url("../images/tire-right.svg");
-    background-repeat: no-repeat;
-    background-position:
-        left -50px bottom -80px,
-        right -50px bottom -80px;
-
     text-align: center;
 }
 

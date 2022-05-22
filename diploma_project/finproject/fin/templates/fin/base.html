@@ -23,6 +23,7 @@
                         <a class="nav__link" href="{% url 'finauth:login' %}">Log In</a>
                     {% else %}
                         <a class="nav__link" href="{% url 'finauth:logout' %}">Log Out</a>
+                        <a class="nav__link" href="{% url 'fin:index' %}">Portfolios</a>
                     {% endif %}
                 </nav>
             </div>

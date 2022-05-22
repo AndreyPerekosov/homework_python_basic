@@ -2,10 +2,11 @@
 
 {% block main %}
 {% if not user.is_anonymous %}
-    {% if portfolios %}
+    {% if user %}
     <ul>
-    {% for portfolio in porfolios %}
-        <li><a href="{% url 'fin:detail_portfolio' portfolio.id %}">{{ portfolio.portfolio_name }}</a></li>
+    {% for portfolio in user.portfolio_set.all %}
+        <li><a href="{% url 'fin:detail_portfolio' portfolio.id %}">{{ portfolio.name_portfolio }}</a>
+        <a href="{% url 'fin:delete_portfolio' portfolio.id %}">delete</a></li>
     {% endfor %}
     </ul>
 {% else %}

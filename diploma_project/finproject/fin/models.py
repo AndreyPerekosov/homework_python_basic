@@ -3,7 +3,7 @@ from finauth.models import FinUser
 
 class Portfolio(models.Model):
     name_portfolio = models.CharField(max_length=200)
-    data = models.JSONField(null=True)
+    data = models.JSONField(null=True, default=dict)
     date_update = models.DateField(auto_now=True)
     user = models.ForeignKey(FinUser, on_delete=models.CASCADE)
 
