@@ -2,15 +2,16 @@ from django.conf.urls import url
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 import requests
+from datetime import timedelta, datetime
 
-
-# Create your views here.
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, UpdateView
 
 from fin.forms import CalcForm
 from fin.models import Portfolio, Stock
 from finauth.models import FinUser
+
+API = {'tinkoff': 'https://api-invest.tinkoff.ru/openapi/market/candles'}
 
 
 def index(request):
@@ -86,8 +87,30 @@ def calc_portfolio(request, portfolio_id):
     if request.method == 'POST':
         form = CalcForm(request.POST)
         if form.is_valid():
+            # preparing data
+            # grab params from the form
             token = form.cleaned_data['token']
-            months = form.cleaned_data['months']
+            # calculate period of time
+            days = form.cleaned_data['days']
+            delta = timedelta(days=days)
+            time_today = datetime.now()
+            time_past = time_today - delta
+            # formatting data for api request
+            time_today = time_today.strftime("%Y-%m-%dT%H:%M:%S%z+03:00")
+            time_past = time_past.strftime("%Y-%m-%dT%H:%M:%S%z+03:00")
+            # get list of stock
+            portfolio = Portfolio.objects.get(id=portfolio_id)
+            stocks = portfolio.stock_set.all()
+            dict_data = {}
+            # preparing headers
+            headers = {'Authorization': 'Bearer ' + token, 'accept': 'application/json'}
+            # process request data from api
+            for stock in stocks:
+                payload = {'figi': stock.figi, 'from': time_past, 'to': time_today, 'interval': 'day'}
+                response = requests.get(API['tinkoff'], headers=headers, params=payload)
+                dump_data = response.json()
+                dict_data[stock.name] = dump_data['payload']['candles']
+            print(dict_data)
             return redirect('fin:detail_portfolio', portfolio_id)
     else:
         form = CalcForm()
