@@ -1,5 +1,3 @@
-from django.conf.urls import url
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 import requests
 from datetime import timedelta, datetime
