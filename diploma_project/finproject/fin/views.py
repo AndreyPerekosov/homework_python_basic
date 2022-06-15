@@ -8,6 +8,10 @@ from django.views.generic import DetailView, CreateView, UpdateView
 from fin.forms import CalcForm
 from fin.models import Portfolio, Stock
 from finauth.models import FinUser
+from fin.service.calc import calc
+
+import pandas as pd
+
 
 API = {'tinkoff': 'https://api-invest.tinkoff.ru/openapi/market/candles'}
 
@@ -89,8 +93,9 @@ def calc_portfolio(request, portfolio_id):
             # grab params from the form
             token = form.cleaned_data['token']
             # calculate period of time
-            days = form.cleaned_data['days']
-            delta = timedelta(days=days)
+            number_iter = form.cleaned_data['number_iter']
+            risk = form.cleaned_data['risk'] / 100
+            delta = timedelta(days=form.cleaned_data['months']*31)
             time_today = datetime.now()
             time_past = time_today - delta
             # formatting data for api request
@@ -103,13 +108,22 @@ def calc_portfolio(request, portfolio_id):
             # preparing headers
             headers = {'Authorization': 'Bearer ' + token, 'accept': 'application/json'}
             # process request data from api
+            df = pd.DataFrame()
             for stock in stocks:
-                payload = {'figi': stock.figi, 'from': time_past, 'to': time_today, 'interval': 'day'}
+                payload = {'figi': stock.figi, 'from': time_past, 'to': time_today, 'interval': 'month'}
                 response = requests.get(API['tinkoff'], headers=headers, params=payload)
                 dump_data = response.json()
-                dict_data[stock.name] = dump_data['payload']['candles']
-            print(dict_data)
+                dates = [date['time'].split('T')[0] for date in dump_data['payload']['candles']]
+                tmp = pd.DataFrame({stock.name: [prices['c'] for prices in dump_data['payload']['candles']]},
+                                   index=dates)
+                df = pd.concat([df, tmp], axis=1)
+                portfolio_data = calc(df, number_iter, risk)
+                portfolio.date_update = datetime.now()
+                portfolio.data = portfolio_data
+                portfolio.save()
             return redirect('fin:detail_portfolio', portfolio_id)
+        else:
+            return render(request, 'fin/calc_portfolio.html', {'form': form})
     else:
         form = CalcForm()
         return render(request, 'fin/calc_portfolio.html', {'form': form})
