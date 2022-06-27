@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect
 import requests
 from datetime import timedelta, datetime
@@ -8,10 +10,9 @@ from django.views.generic import DetailView, CreateView, UpdateView
 from fin.forms import CalcForm
 from fin.models import Portfolio, Stock
 from finauth.models import FinUser
-from fin.service.calc import calc
+from fin.service.service import calc, colors
 
 import pandas as pd
-
 
 API = {'tinkoff': 'https://api-invest.tinkoff.ru/openapi/market/candles'}
 
@@ -38,6 +39,13 @@ class PageTitleMixin:
 class PortfolioDetailView(PageTitleMixin, DetailView):
     model = Portfolio
     page_title = 'Portfolio detail'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        instance = self.get_object()
+        context['data'] = json.loads(instance.data)
+        context['colors'] = json.loads(instance.colors)
+        return context
 
 
 class PortfolioCreateView(PageTitleMixin, CreateView):
@@ -95,7 +103,7 @@ def calc_portfolio(request, portfolio_id):
             # calculate period of time
             number_iter = form.cleaned_data['number_iter']
             risk = form.cleaned_data['risk'] / 100
-            delta = timedelta(days=form.cleaned_data['months']*31)
+            delta = timedelta(days=form.cleaned_data['months'] * 31)
             time_today = datetime.now()
             time_past = time_today - delta
             # formatting data for api request
@@ -104,7 +112,6 @@ def calc_portfolio(request, portfolio_id):
             # get list of stock
             portfolio = Portfolio.objects.get(id=portfolio_id)
             stocks = portfolio.stock_set.all()
-            dict_data = {}
             # preparing headers
             headers = {'Authorization': 'Bearer ' + token, 'accept': 'application/json'}
             # process request data from api
@@ -117,10 +124,17 @@ def calc_portfolio(request, portfolio_id):
                 tmp = pd.DataFrame({stock.name: [prices['c'] for prices in dump_data['payload']['candles']]},
                                    index=dates)
                 df = pd.concat([df, tmp], axis=1)
-                portfolio_data = calc(df, number_iter, risk)
-                portfolio.date_update = datetime.now()
-                portfolio.data = portfolio_data
-                portfolio.save()
+            portfolio_data = calc(df, number_iter, risk)
+            portfolio.date_update = datetime.now()
+            portfolio.data = json.dumps(portfolio_data['data'])
+            portfolio.volatility = portfolio_data['vol_ret']['Volatility']
+            portfolio.portfolio_return = portfolio_data['vol_ret']['Returns']
+            portfolio.sharp = portfolio_data['Sharp']
+            colors_list = []
+            for color in colors(len(stocks)):
+                colors_list.append(color)
+            portfolio.colors = json.dumps(colors_list)
+            portfolio.save()
             return redirect('fin:detail_portfolio', portfolio_id)
         else:
             return render(request, 'fin/calc_portfolio.html', {'form': form})

@@ -14,4 +14,10 @@
     {% endif %}
     <p><a href="{% url 'fin:create_portfolio' %}">Add portfolio</a> </p>
 {% endif %}
+    {% load static %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script src="{% static 'fin/js/chart.js' %}"></script>
 {% endblock %}

@@ -16,4 +16,41 @@
         <p>No stocks are available.</p>
     {% endif %}
     <a href="{% url 'fin:update_portfolio' portfolio.id %}">Update portfolio</a>
+    {% load static %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div style="width:600px" >
+        <canvas id="myChart"></canvas>
+    </div>
+    <script>
+        const val = [
+            {% for value in data.values %}
+                {{ value }},
+            {% endfor %}
+        ];
+        const labels = [
+            {% for key in data.keys %}
+                "{{ key }}",
+            {% endfor %}
+        ];
+        const colors = [
+            {% for color in colors %}
+                "{{ color }}",
+            {% endfor %}
+        ];
+        const data = { labels: labels,
+            datasets: [{
+                data: val,
+                backgroundColor: colors
+    }]
+        };
+        const config = {
+            type: 'pie',
+            data: data,
+            options: {}
+        };
+         const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
 {% endblock %}
