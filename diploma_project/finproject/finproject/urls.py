@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('fin/', include('fin.urls', namespace='fin')),
     path('finauth/', include('finauth.urls', namespace='finauth')),
+    path('select2/', include("django_select2.urls")),
 
 ]

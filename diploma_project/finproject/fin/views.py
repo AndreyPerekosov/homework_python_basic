@@ -6,6 +6,7 @@ from datetime import timedelta, datetime
 
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, UpdateView
+from numpy import unicode
 
 from fin.forms import CalcForm
 from fin.models import Portfolio, Stock
@@ -13,6 +14,10 @@ from finauth.models import FinUser
 from fin.service.service import calc, colors
 
 import pandas as pd
+
+from django.http import Http404, HttpResponse
+import json
+import django.apps as apps
 
 API = {'tinkoff': 'https://api-invest.tinkoff.ru/openapi/market/candles'}
 
@@ -68,7 +73,8 @@ class PortfolioUpdateView(PageTitleMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        stocks = Stock.objects.all()
+        obj = super().get_object()
+        stocks = Stock.objects.exclude(portfolio__stock=obj.id)
         context['stocks'] = stocks
         return context
 
@@ -79,9 +85,10 @@ def delete_portfolio(request, pk):
     return render(request, 'fin/index.html')
 
 
-def add_stock(request, portfolio_id, stock_id):
+def add_stock(request, portfolio_id):
     portfolio = Portfolio.objects.get(id=portfolio_id)
-    stock = Stock.objects.get(id=stock_id)
+    stock_name = request.POST['add_stock']
+    stock = Stock.objects.filter(name__startswith=stock_name).first()
     portfolio.stock_set.add(stock)
     return redirect('fin:update_portfolio', portfolio_id)
 
@@ -141,3 +148,5 @@ def calc_portfolio(request, portfolio_id):
     else:
         form = CalcForm()
         return render(request, 'fin/calc_portfolio.html', {'form': form})
+
+

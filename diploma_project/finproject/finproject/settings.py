@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     # my apps
     'fin',
     'finauth',
+    # third party apps
+    'django_select2',
+    'django_redis',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +140,25 @@ AUTH_USER_MODEL = 'finauth.FinUser'
 LOGIN_URL = '/finauth/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# # settings working select2 with redis
+# # make sure for runing redis server - redis-server
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     },
+#     "select2": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/2",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
+#
+# # Tell select2 which cache configuration to use:
+# SELECT2_CACHE_BACKEND = "select2"

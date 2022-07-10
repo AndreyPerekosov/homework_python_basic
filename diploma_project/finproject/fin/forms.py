@@ -6,4 +6,3 @@ class CalcForm(forms.Form):
     months = forms.IntegerField(label='Calc period - number of months')
     number_iter = forms.IntegerField(label='Enter number of iter')
     risk = forms.FloatField(label='Enter free risk rate, %')
-
