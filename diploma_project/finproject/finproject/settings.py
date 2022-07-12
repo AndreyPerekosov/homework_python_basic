@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'fin',
     'finauth',
     # third party apps
-    'django_select2',
-    'django_redis',
+
 ]
 
 MIDDLEWARE = [
